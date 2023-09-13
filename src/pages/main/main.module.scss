@@ -1,0 +1,32 @@
+.main{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 25px;
+
+  .search{
+    display: flex;
+    align-items: center;
+    input{
+      width: 300px;
+      height: 42px;
+      padding: 0 15px;
+      border-radius: 10px;
+      border: 1px solid black;
+      margin-right: 10px;
+
+      outline: none;
+    }
+    button{
+      width: 50px;
+      height: 44px;
+      border: none;
+      background: green;
+      color: white;
+      font-size: 20px;
+      border-radius: 10px;
+
+      cursor: pointer;
+    }
+  }
+}
