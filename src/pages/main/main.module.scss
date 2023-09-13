@@ -29,4 +29,14 @@
       cursor: pointer;
     }
   }
+
+  .result{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 25px;
+    div{
+    }
+  }
 }
+

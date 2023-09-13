@@ -1,11 +1,11 @@
 import React from 'react'
 import c from './main.module.scss'
-import { useForm } from 'react-hook-form'
+import { set, useForm } from 'react-hook-form'
 import { BiSearch } from 'react-icons/bi'
 import axios from 'axios'
 
 const Main = () => {
-  const [ currencies, setCurrencies ] = React.useState(null)
+  const [ currencies, setCurrencies ] = React.useState([])
 
   const { 
     register,
@@ -21,27 +21,40 @@ const Main = () => {
   }
 
   const GetPrices = (currency) => {
-    const result = []
+    let res1 = []
+    const text = currency.split('/')
+    const textForAll = `${text[0]}${text[1]}`
 
-    axios(`${binance_url}/ticker/price`)
+    console.log(text);
+
+    axios(`${binance_url}/ticker/price?symbol=${currency.toUpperCase()}`)
       .then(res => {
-        const result = res?.data?.filter(item => item.symbol === currency?.toUpperCase())
-        const price = parseFloat(result[0]?.price).toFixed(2)          
-        result.push({stock: 'Binance', symbol: result[0]?.symbol, price: price})
-
+        const price = parseFloat(res.data?.price).toFixed(2)          
+        res1.push({stock: 'Binance', symbol: res.data.symbol, price: price})
       })
+      
+      axios(`${bybit_url}/v2/public/tickers?symbol=${currency.toUpperCase()}`)
+        .then(res => {
+          res1.push({stock: 'BYBIT', symbol: res.data.result[0].symbol, price: res.data.result[0].index_price})
+        })
+
+    
+
+    // axios.get('https://poloniex.com/public?command=returnTicker')
+    //   .then(res => {
+    //     // const result = res?.data.result?.filter(item => item.symbol.toUpperCase() === textForAll?.toUpperCase())
+    //     // const price = parseFloat(result[0]?.index_price).toFixed(2)
+    //     // res1.push({stock: 'BYBIT', symbol: result[0]?.symbol, price: price})
+
+    //     console.log(res.data);
+    //   })
 
 
-    axios(`${bybit_url}/v2/public/tickers`)
-      .then(res => {
-        const result = res?.data.result?.filter(item => item.symbol === currency?.toUpperCase())
-        const price = parseFloat(result[0]?.index_price).toFixed(2)
-        result.push({stock: 'BYBIT', symbol: result[0]?.symbol, price: price})
-      })
-      setCurrencies(result)
-  
-    }
-  
+    setTimeout(() => {
+      setCurrencies(res1)
+    }, 400);
+  }
+
 
   return (
     <div className={c.main}>
@@ -62,10 +75,8 @@ const Main = () => {
 
       <div className={c.result}>
         {
-          !currencies ? 
-          <h2>NO!</h2> :
-          currencies?.map(item => (
-            <div>
+          currencies?.map((item, i) => (
+            <div key={i}>
               <h2>{item.stock} - {item.symbol}</h2>
               <h1>{item.price}$</h1>
             </div>
