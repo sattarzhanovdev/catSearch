@@ -38,5 +38,22 @@
     div{
     }
   }
+
+  .result2{
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    gap: 50px;
+    div{
+      h2{
+        span{
+          color: green;
+          &.exp{
+            color: red
+          }
+        }
+      }
+    }
+  }
 }
 
