@@ -36,6 +36,9 @@
     gap: 25px;
     margin-top: 25px;
     div{
+      .spread{
+        color: green;
+      }
     }
   }
 
@@ -52,6 +55,14 @@
             color: red
           }
         }
+      }
+    }
+  }
+
+  .spread{
+    h1{
+      span{
+        color: green;
       }
     }
   }
