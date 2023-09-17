@@ -4,11 +4,12 @@ import { useForm } from 'react-hook-form'
 import { BiSearch } from 'react-icons/bi'
 import axios from 'axios'
 
-const Main = () => {
+const ManualSearch = () => {
   const [ currencies, setCurrencies ] = React.useState([])
   const [ expensive, setExpensive ] = React.useState(null)
   const [ cheap, setCheap ] = React.useState(null)
   const [ spread, setSpread ] = React.useState(0)
+  const [ currency, setCurrency ] = React.useState(null)
 
   const { 
     register,
@@ -40,6 +41,7 @@ const Main = () => {
     const text = currency.split('/')
     const textForAll = `${text[0]}${text[1]}`
     const textForSomeStocks = `${text[0]}${text[1].toLowerCase() === 'usdt' ? 'USD' : text[1]}`
+    setCurrency(`${text[0].toUpperCase()}/${text[1].toUpperCase()}`)
 
     axios.get(`${binance_url}/ticker/bookTicker?symbol=${textForAll.toUpperCase()}`)
       .then(res => {
@@ -88,6 +90,17 @@ const Main = () => {
           // spread: parseFloat(Number(res.data.bid) - Number(res.data.ask)).toFixed(2)
         })
       })
+      .catch(() => {
+        axios.get(`https://www.bitstamp.net/api/v2/ticker/${textForSomeStocks.toLowerCase()}/`)
+          .then(res => {
+            res1.push({
+              stock: 'Bitstamp', 
+              symbol: textForAll.toUpperCase(), 
+              price: res.data.bid,
+              // spread: parseFloat(Number(res.data.bid) - Number(res.data.ask)).toFixed(2)
+            })
+          })
+      })
 
     // fetch(`https://open-api.bingx.com/openApi/spot/v1/common/symbols`, {
     // })
@@ -126,7 +139,7 @@ const Main = () => {
 
 
       // const spread = res1?.reduce((max, obj) => obj.price - max.price ? console.log(obj) : max)     
-    }, 800);
+    }, 2000);
 
     
   }
@@ -140,47 +153,52 @@ const Main = () => {
       >
         <input 
           type="text"
-          placeholder='Поиск'
+          placeholder='Введите с окончанием /usdt'
           {...register('currency')}
         />
 
         <button type='submit'>
-          <BiSearch />
+          Поиск
         </button>
       </form>
 
-      <div className={c.result}>
-        {
-          currencies?.map((item, i) => (
-            <div key={i}>
-              <h2>{item.stock} - {item.symbol}</h2>
-              <h1>{item.price}$</h1>
-              {/* <h2 className={c.spread}>Спред: {item.spread}</h2> */}
+      {
+        currency ?
+        <div className={c.result}>
+          <div className={c.currency}>
+            <h1>{currency}</h1>
+          </div>
+          <div className={c.expensive}>
+            <div className={c.up}>
+              <h3>Long</h3>
             </div>
-          ))
-        }
-      </div>
-
-      {
-        cheap && expensive ?
-        <div className={c.result2}>
-          <div>
-            <h2><span>Дешевый</span> - {cheap.stock}</h2>
-            <h1>{cheap.price}$</h1>
+            <div className={c.down}>
+              <h3>{expensive?.stock}</h3>
+              <h2>{expensive?.price}</h2>
+            </div>
           </div>
-          <div>
-            <h2><span className={c.exp}>Дорогой</span> - {expensive.stock}</h2>
-            <h1>{expensive.price}$</h1>
+          <div className={c.cheap}>
+            <div className={c.up}>
+              <h3>Short</h3>
+            </div>
+            <div className={c.down}>
+              <h3>{cheap?.stock}</h3>
+              <h2>{cheap?.price}</h2>
+            </div>
           </div>
-        </div>
-        :
-        null
-      }
-
-      {
-        spread ?
-        <div className={c.spread}>
-          <h1>Спред: <span>{spread}%</span></h1>
+          {
+            currencies?.map(item => (
+              <div className={c.stock}>
+                <div className={c.up}>
+                  <h3>{item.stock}</h3>
+                </div>
+                <div className={c.down}>
+                  <h3>ㅤ</h3>
+                  <h2>{item?.price}</h2>
+                </div>
+              </div>
+            ))
+          }
         </div> :
         null
       }
@@ -189,4 +207,40 @@ const Main = () => {
   )
 }
 
-export default Main
+export default ManualSearch
+
+{/* <div className={c.result}>
+{
+  currencies?.map((item, i) => (
+    <div key={i}>
+      <h2>{item.stock} - {item.symbol}</h2>
+      <h1>{item.price}$</h1>
+      {/* <h2 className={c.spread}>Спред: {item.spread}</h2> */}
+    // </div>
+  // ))
+// }
+// </div>
+// 
+// {
+// cheap && expensive ?
+{/* <div className={c.result2}> */}
+  {/* <div> */}
+    {/* <h2><span>Дешевый</span> - {cheap.stock}</h2> */}
+    {/* <h1>{cheap.price}$</h1> */}
+  {/* </div> */}
+  {/* <div> */}
+    {/* <h2><span className={c.exp}>Дорогой</span> - {expensive.stock}</h2> */}
+    {/* <h1>{expensive.price}$</h1> */}
+  {/* </div> */}
+{/* </div> */}
+// :
+// null
+// }
+// 
+// {
+// spread ?
+{/* <div className={c.spread}> */}
+  {/* <h1>Спред: <span>{spread}%</span></h1> */}
+{/* </div> : */}
+// null
+// } */}

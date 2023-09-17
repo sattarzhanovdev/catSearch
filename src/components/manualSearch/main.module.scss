@@ -1,0 +1,144 @@
+.main{
+  margin-top: 36px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+
+  .search{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    input{
+      width: 329px;
+      height: 37px;
+      padding: 0 10px;
+      color: #B6B6B6;
+      border: 1px solid #B6B6B6;
+      border-radius: 5px;
+      outline: none;
+    }
+    button{
+      width: 72px;
+      height: 39px;
+      border-radius: 6px;
+      background: #8CABFC;
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .result{
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    .currency{
+      width: 160px;
+      height: 138px;
+      border: 1px solid #A3A3A3;
+      border-radius: 14px;
+      h1{
+        font-size: 18px;
+        margin: 20px;
+      }
+    }
+    .expensive{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 120px;
+      height: 137px;
+      border: 1px solid #A3A3A3;
+      border-radius: 14px;
+      .up{
+        h3{
+          color: #A0C763;
+          font-size: 18px;
+          margin: 0;
+          margin: 20px;
+        }
+      }
+      .down{
+        margin: 20px;
+  
+        h3{
+          font-size: 14px;
+          margin: 0;
+          color: #B6B6B6;
+        }
+        h2{
+          margin: 0;
+          font-size: 18px;
+        }
+      }
+    }
+    .cheap{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 120px;
+      height: 137px;
+      border: 1px solid #A3A3A3;
+      border-radius: 14px;
+      .up{
+        h3{
+          color: #E15226;
+          font-size: 18px;
+          margin: 0;
+          margin: 20px;
+        }
+      }
+      .down{
+        margin: 20px;
+  
+        h3{
+          font-size: 14px;
+          margin: 0;
+          color: #B6B6B6;
+        }
+        h2{
+          margin: 0;
+          font-size: 18px;
+        }
+      }
+    }
+    .stock{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 120px;
+      height: 137px;
+      border: 1px solid #A3A3A3;
+      border-radius: 14px;
+      .up{
+        h3{
+          color: black;
+          font-size: 18px;
+          margin: 0;
+          margin: 20px;
+        }
+      }
+      .down{
+        margin: 20px;
+  
+
+        h3{
+          font-size: 14px;
+          margin: 0;
+          color: #B6B6B6;
+        }
+        h2{
+          margin: 0;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+
