@@ -10,6 +10,7 @@ const ManualSearch = () => {
   const [ cheap, setCheap ] = React.useState(null)
   const [ spread, setSpread ] = React.useState(0)
   const [ currency, setCurrency ] = React.useState(null)
+  const [ loading, setLoading ] = React.useState(false)
 
   const { 
     register,
@@ -43,6 +44,8 @@ const ManualSearch = () => {
     const textForSomeStocks = `${text[0]}${text[1].toLowerCase() === 'usdt' ? 'USD' : text[1]}`
     setCurrency(`${text[0].toUpperCase()}/${text[1].toUpperCase()}`)
 
+    setLoading(true)
+
     axios.get(`${binance_url}/ticker/bookTicker?symbol=${textForAll.toUpperCase()}`)
       .then(res => {
         const askPrice = parseFloat(res.data?.askPrice).toFixed(2)          
@@ -55,6 +58,9 @@ const ManualSearch = () => {
           // spread: parseFloat(spread).toFixed(2)
         })
       })
+      .catch(() => {
+        setLoading(true)
+      })
       
     axios.get(`${bybit_url}/v2/public/tickers?symbol=${textForAll.toUpperCase()}`)
       .then(res => {
@@ -64,6 +70,9 @@ const ManualSearch = () => {
           price: res.data.result[0].index_price, 
           // spread: parseFloat(Number(res.data.result[0].bid_price) - Number(res.data.result[0].ask_price)).toFixed(2)
         })
+      })
+      .catch(() => {
+        setLoading(true)
       })
 
 
@@ -79,6 +88,9 @@ const ManualSearch = () => {
           // spread: parseFloat(Number(result[0].bestBid) - Number(result[0].bestAsk)).toFixed(2)
         })
       })
+      .catch(() => {
+        setLoading(false)
+      })
     
 
     axios.get(`https://www.bitstamp.net/api/v2/ticker/${textForAll.toLowerCase()}/`)
@@ -91,36 +103,9 @@ const ManualSearch = () => {
         })
       })
       .catch(() => {
-        axios.get(`https://www.bitstamp.net/api/v2/ticker/${textForSomeStocks.toLowerCase()}/`)
-          .then(res => {
-            res1.push({
-              stock: 'Bitstamp', 
-              symbol: textForAll.toUpperCase(), 
-              price: res.data.bid,
-              // spread: parseFloat(Number(res.data.bid) - Number(res.data.ask)).toFixed(2)
-            })
-          })
+        setLoading(false)
       })
-
-    // fetch(`https://open-api.bingx.com/openApi/spot/v1/common/symbols`, {
-    // })
-    //   .then(res => res.json())
-    //   .then(res => {
-    //     console.log(res);
-    //     // res1.push({stock: 'Bitstamp', symbol: textForAll.toUpperCase(), price: res.data.bid})
-    //   })
-
-    // axios.get('https://api-pub.bitfinex.com/v2/tickers?symbols=ALL', {
-    //   headers: {
-    //     'Accept': 'application/json'
-    //   }
-    // })
-    //   .then(res => {
-    //     const result = res.data.filter(item => item[0].toLowerCase().includes(textForAll.toLowerCase()))
-    //     console.log(result);
-    //     // res1.push({stock: 'Bitfinex', symbol: textForAll.toUpperCase(), price: res.data[0]})
-    //   })
-
+    
 
 
     setTimeout(() => {
@@ -136,12 +121,11 @@ const ManualSearch = () => {
       const midPrice = (Number(exp.price) + Number(cheaper.price)) / 2;
       setSpread(parseFloat((spread / midPrice) * 100).toFixed(5));
 
-
+      setLoading(false)
 
       // const spread = res1?.reduce((max, obj) => obj.price - max.price ? console.log(obj) : max)     
-    }, 2000);
+    }, 1000);
 
-    
   }
 
 
@@ -160,6 +144,13 @@ const ManualSearch = () => {
         <button type='submit'>
           Поиск
         </button>
+        {
+          loading ?
+          <img 
+            src="https://i.gifer.com/ZKZg.gif" 
+            alt="loading" 
+          /> : null
+        }
       </form>
 
       {
@@ -167,6 +158,10 @@ const ManualSearch = () => {
         <div className={c.result}>
           <div className={c.currency}>
             <h1>{currency}</h1>
+            <div className={c.spread}>
+              <h3>Long/Short Spread</h3>
+              <h1>{spread}%</h1>
+            </div>
           </div>
           <div className={c.expensive}>
             <div className={c.up}>

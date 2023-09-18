@@ -28,6 +28,10 @@
       border: none;
       cursor: pointer;
     }
+    img{
+      width: 30px;
+      margin-left: 20px;
+    }
   }
 
   .result{
@@ -40,9 +44,28 @@
       height: 138px;
       border: 1px solid #A3A3A3;
       border-radius: 14px;
+      background: #FFD3B7;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: space-between;
       h1{
         font-size: 18px;
         margin: 20px;
+      }
+      .spread{
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin: 20px;
+        gap: 5px;
+        h1, h3{
+          margin: 0;
+        }
+
+        h3{
+          font-size: 12px;
+        }
       }
     }
     .expensive{
