@@ -116,7 +116,6 @@ const ManualSearch = () => {
       const cheaper = res1?.reduce((max, obj) => obj.price < max.price ? obj : max)
       setCheap(cheaper);
 
-
       const spread = parseFloat(Number(exp.price) - Number(cheaper.price)).toFixed(2)
       const midPrice = (Number(exp.price) + Number(cheaper.price)) / 2;
       setSpread(parseFloat((spread / midPrice) * 100).toFixed(5));
@@ -154,7 +153,7 @@ const ManualSearch = () => {
       </form>
 
       {
-        currency ?
+        !loading && currency ?
         <div className={c.result}>
           <div className={c.currency}>
             <h1>{currency}</h1>
@@ -182,8 +181,8 @@ const ManualSearch = () => {
             </div>
           </div>
           {
-            currencies?.map(item => (
-              <div className={c.stock}>
+            currencies?.map((item, i) => (
+              <div className={c.stock} key={i}>
                 <div className={c.up}>
                   <h3>{item.stock}</h3>
                 </div>
@@ -203,39 +202,3 @@ const ManualSearch = () => {
 }
 
 export default ManualSearch
-
-{/* <div className={c.result}>
-{
-  currencies?.map((item, i) => (
-    <div key={i}>
-      <h2>{item.stock} - {item.symbol}</h2>
-      <h1>{item.price}$</h1>
-      {/* <h2 className={c.spread}>Спред: {item.spread}</h2> */}
-    // </div>
-  // ))
-// }
-// </div>
-// 
-// {
-// cheap && expensive ?
-{/* <div className={c.result2}> */}
-  {/* <div> */}
-    {/* <h2><span>Дешевый</span> - {cheap.stock}</h2> */}
-    {/* <h1>{cheap.price}$</h1> */}
-  {/* </div> */}
-  {/* <div> */}
-    {/* <h2><span className={c.exp}>Дорогой</span> - {expensive.stock}</h2> */}
-    {/* <h1>{expensive.price}$</h1> */}
-  {/* </div> */}
-{/* </div> */}
-// :
-// null
-// }
-// 
-// {
-// spread ?
-{/* <div className={c.spread}> */}
-  {/* <h1>Спред: <span>{spread}%</span></h1> */}
-{/* </div> : */}
-// null
-// } */}
